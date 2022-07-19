@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+/*
 func test() {
 	var num1 []int
 	var num2 = []int{1, 2, 3}
@@ -34,7 +35,7 @@ func test1() {
 		}
 	}
 
-}
+}*/
 
 func test2() {
 	s := []int{5}
