@@ -49,7 +49,32 @@ func test2() {
 	fmt.Println(s, x, y, cap(s), cap(x), cap(y))
 }
 
+func myAppend(s []int) []int {
+	// 这里 s 虽然改变了，但并不会影响外层函数的 s
+	s = append(s, 100)
+	return s
+}
+
+func myAppendPtr(s *[]int) {
+	// 会改变外层 s 本身
+	*s = append(*s, 100)
+}
+
+func test3() {
+	s := []int{1, 1, 1}
+	newS := myAppend(s)
+
+	fmt.Println(s)
+	fmt.Println(newS)
+
+	s = newS
+
+	myAppendPtr(&s)
+	fmt.Println(s)
+}
+
 func main() {
 	//test1()
-	test2()
+	//test2()
+	test3()
 }

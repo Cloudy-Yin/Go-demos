@@ -7,7 +7,7 @@ import (
 
 func countSentence(testString string) map[string]int {
 	stringAfterop := strings.Split(testString, " ")
-	mapDemo := make(map[string]int, len(stringAfterop))
+	mapDemo := make(map[string]int)
 	for k, v := range stringAfterop {
 		fmt.Printf("%v, %v\n", k, v)
 		mapDemo[v]++
