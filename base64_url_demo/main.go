@@ -36,10 +36,15 @@ func Encrypt(encrypt_key string, plainText string) string {
 
 func test1() {
 	// 进行标准base64加密，将二进制字节转换成文本
-	e := base64.StdEncoding.EncodeToString([]byte("Man"))
+	e := base64.StdEncoding.EncodeToString([]byte("Man+wowen中国人"))
 	fmt.Println(e)
-	teststr := e + "+/?,;&@:"
-	fmt.Println(url.QueryEscape(teststr))
+
+	//进行url转义
+	teststr := "?ab+=cd"
+	teststr1 := url.QueryEscape(teststr)
+	fmt.Println(teststr1)
+	teststr2, _ := url.QueryUnescape(teststr1)
+	fmt.Println(teststr2)
 
 	// 进行解密
 	str, err := base64.StdEncoding.DecodeString(e)
@@ -50,9 +55,10 @@ func test1() {
 	fmt.Println("-------------------------")
 
 	// 进行URL和文件的base64加密
-	e1 := base64.URLEncoding.EncodeToString([]byte("http://localhost?redirect=http://www.baidu.com/search?query=go学堂&name=渔&夫?,:;+子"))
+	e1 := base64.URLEncoding.EncodeToString([]byte("http://localhost?redirect=http://www.baidu.com/search?query=go学堂&name=渔&夫+?:;+子"))
 	fmt.Println(e1)
 	fmt.Println(url.QueryEscape(e1))
+	fmt.Println(url.QueryUnescape(e1))
 	// 进行解密
 	str1, err := base64.URLEncoding.DecodeString(e1)
 	if err != nil {
@@ -69,4 +75,5 @@ func main() {
 	fmt.Println(cipherText)
 	fmt.Println("-------------------------")
 	test1()
+
 }
