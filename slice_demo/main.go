@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"unsafe"
 )
 
 /*
@@ -39,10 +40,15 @@ func test1() {
 
 func test2() {
 	s := []int{5}
+	fmt.Printf("%v, %p, %v\n", &s[0], &s, unsafe.Sizeof(s))
 	s = append(s, 7)
+	fmt.Printf("%v, %p\n", &s[0], &s)
 	s = append(s, 9)
+	fmt.Printf("%v, %p\n", &s[0], &s)
 	x := append(s, 11)
+	fmt.Printf("%v, %p\n", &s[0], &s)
 	x = append(x, 12)
+	fmt.Printf("%v, %p\n", &x[0], &x)
 	x[0] = 1
 	y := append(x, 12)
 	y[0] = 2
@@ -75,6 +81,22 @@ func test3() {
 
 func main() {
 	//test1()
-	//test2()
+	test2()
+	fmt.Println("--------------")
 	test3()
+
+	// var a = [5]int{1, 2, 3, 4, 5}
+	// var r [5]int
+	// for i, v := range &a {
+	// 	if i == 0 {
+	// 		a[1] = 12
+	// 		a[2] = 13
+
+	// 	}
+
+	// 	r[i] = v
+
+	// }
+	// fmt.Println(r)
+	// fmt.Println(a)
 }
