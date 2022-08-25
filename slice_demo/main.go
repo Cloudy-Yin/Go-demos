@@ -47,6 +47,7 @@ func test2() {
 	fmt.Printf("%v, %p\n", &s[0], &s)
 	x := append(s, 11)
 	fmt.Printf("%v, %p\n", &s[0], &s)
+	fmt.Printf("%v, %p\n", &x[0], &x)
 	x = append(x, 12)
 	fmt.Printf("%v, %p\n", &x[0], &x)
 	x[0] = 1
