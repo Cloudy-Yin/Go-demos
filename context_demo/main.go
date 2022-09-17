@@ -3,13 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
-	"runtime"
 	"time"
 )
 
 //withdeadline返回父上下文的副本，并将deadline调整为不迟于d。如果父上下文的deadline已经早于d，则WithDeadline(parent, d)在语义上等同于父上下文。
 //当截止日过期时，当调用返回的cancel函数时，或者当父上下文的Done通道关闭时，返回上下文的Done通道将被关闭，以最先发生的情况为准。
-/*
+
 func main() {
 	d := time.Now().Add(50 * time.Millisecond)
 	ctx, cancel := context.WithDeadline(context.Background(), d)
@@ -19,64 +18,64 @@ func main() {
 	defer cancel()
 
 	select {
-	case <-time.After(10 * time.Millisecond):
+	case <-time.After(1 * time.Second):
 		fmt.Println("overslept")
 	case <-ctx.Done():
 		fmt.Println(ctx.Err())
 	}
 
-}*/
+}
 
 //WithTimeout   取消此上下文将释放与其相关的资源，因此代码应该在此上下文中运行的操作完成后立即调用cancel，通常用于数据库或者网络连接的超时控制
-type workername string
+// type workername string
 
-func worker(ctx context.Context) {
-	key := workername("name")
-	val := ctx.Value(key).(string)
-	ctx = context.WithValue(ctx, workername("name2"), "lisi")
-	go worker2(ctx)
+// func worker(ctx context.Context) {
+// 	key := workername("name")
+// 	val := ctx.Value(key).(string)
+// 	ctx = context.WithValue(ctx, workername("name2"), "lisi")
+// 	go worker2(ctx)
 
-	fmt.Printf("%v worker start to work......\n", val)
-	for {
-		time.Sleep(time.Millisecond * 100)
-		select {
-		case <-ctx.Done():
-			fmt.Printf("%v worker over\n", val)
-			return
-		default:
-			fmt.Printf("%v worker is running \n", val)
-		}
-	}
-}
+// 	fmt.Printf("%v worker start to work......\n", val)
+// 	for {
+// 		time.Sleep(time.Millisecond * 100)
+// 		select {
+// 		case <-ctx.Done():
+// 			fmt.Printf("%v worker over\n", val)
+// 			return
+// 		default:
+// 			fmt.Printf("%v worker is running \n", val)
+// 		}
+// 	}
+// }
 
-func worker2(ctx context.Context) {
-	key := workername("name2")
-	val := ctx.Value(key).(string)
+// func worker2(ctx context.Context) {
+// 	key := workername("name2")
+// 	val := ctx.Value(key).(string)
 
-	fmt.Printf("%v worker2 start to work......\n", val)
-	for {
-		time.Sleep(time.Millisecond * 100)
-		select {
-		case <-ctx.Done():
-			fmt.Printf("%v worker2 over\n", val)
-			return
-		default:
-			fmt.Printf("%v worker2 is running \n", val)
-		}
-	}
-}
-func main() {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond*50)
-	ctx = context.WithValue(ctx, workername("name"), "zhangsan")
-	defer cancel()
+// 	fmt.Printf("%v worker2 start to work......\n", val)
+// 	for {
+// 		time.Sleep(time.Millisecond * 100)
+// 		select {
+// 		case <-ctx.Done():
+// 			fmt.Printf("%v worker2 over\n", val)
+// 			return
+// 		default:
+// 			fmt.Printf("%v worker2 is running \n", val)
+// 		}
+// 	}
+// }
+// func main() {
+// 	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond*50)
+// 	ctx = context.WithValue(ctx, workername("name"), "zhangsan")
+// 	defer cancel()
 
-	go worker(ctx)
-	fmt.Println(runtime.NumGoroutine())
-	time.Sleep(time.Second * 3)
+// 	go worker(ctx)
+// 	fmt.Println(runtime.NumGoroutine())
+// 	time.Sleep(time.Second * 3)
 
-	fmt.Println("main over")
-	fmt.Println(runtime.NumGoroutine())
-}
+// 	fmt.Println("main over")
+// 	fmt.Println(runtime.NumGoroutine())
+// }
 
 //WithCancel返回带有新Done通道的父节点的副本。当调用返回的cancel函数或当关闭父上下文的Done通道时，将关闭返回上下文的Done通道，无论先发生什么情况。
 //取消此上下文将释放与其关联的资源，因此代码应该在此上下文中运行的操作完成后立即调用cancel。
