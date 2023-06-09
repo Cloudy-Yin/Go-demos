@@ -140,6 +140,18 @@ func test6(nums1, nums2 []int) {
 
 }
 
+func reverselist(head *Listnode) {
+
+	pre, cur := nil, head
+	for cur != nil {
+		tmp := cur.Next
+		cur.Next = pre
+		pre = cur
+		cur = tmp
+	}
+	return pre
+}
+
 func main() {
 	// test1()
 	// test2()
