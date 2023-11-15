@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-//goroutine超时控制使用 context实现
+// goroutine超时控制使用 context实现
 func worker(ctx context.Context, ch chan struct{}) {
 
 	for {
