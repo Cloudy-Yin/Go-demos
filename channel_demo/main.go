@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"runtime"
+	"sync"
 	"time"
 )
 
@@ -25,26 +25,66 @@ func worker(ctx context.Context, ch chan struct{}) {
 	//fmt.Println("goroutine over")
 }
 
+var wg sync.WaitGroup
+var CA chan int
+var CB chan int
+
 func main() {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	wg = sync.WaitGroup{}
+	CA = make(chan int, 1)
+	CB = make(chan int, 1)
+	wg.Add(2)
 
-	ch := make(chan struct{})
-	go worker(ctx, ch)
-	fmt.Println(runtime.NumGoroutine())
-	i := 0
-	for n := range ch {
-		fmt.Println(n)
-		i++
-		if i == 6 {
-			cancel()
-		}
-	}
-
-	time.Sleep(time.Second * 2)
-	fmt.Println(runtime.NumGoroutine())
-	fmt.Println("main over")
+	go A()
+	go B()
+	CA <- 1
+	//time.Sleep(10 * time.Second)
+	wg.Wait()
 
 }
+
+func A() {
+
+	for i := 0; i < 50; i++ {
+		<-CA
+		fmt.Println(2 * i)
+		CB <- 1
+	}
+	wg.Done()
+
+}
+
+func B() {
+
+	for i := 0; i < 50; i++ {
+		<-CB
+		fmt.Println(2*i + 1)
+		CA <- 1
+	}
+	wg.Done()
+
+}
+
+// func main() {
+// 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+
+// 	ch := make(chan struct{})
+// 	go worker(ctx, ch)
+// 	fmt.Println(runtime.NumGoroutine())
+// 	i := 0
+// 	for n := range ch {
+// 		fmt.Println(n)
+// 		i++
+// 		if i == 6 {
+// 			cancel()
+// 		}
+// 	}
+
+// 	time.Sleep(time.Second * 2)
+// 	fmt.Println(runtime.NumGoroutine())
+// 	fmt.Println("main over")
+
+// }
 
 /*  goroutine超时控制使用
 var wg sync.WaitGroup
