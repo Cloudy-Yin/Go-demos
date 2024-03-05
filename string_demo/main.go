@@ -23,7 +23,29 @@ func decodeRune() {
 	fmt.Printf("the unicode charactor after decoding [0xE4, 0xB8, 0xAD] is %v\n", string(r)) // 中
 }
 
+func modifystrval() {
+	var byteString string = "hello, world"
+	byteArr := []byte(byteString)
+	fmt.Println(byteArr, []byte("go"))
+	//修改切片中某个值
+	byteArr[6] = []byte("g")[0]
+	//打应输出
+	fmt.Println(string(byteArr))
+}
+
+func change(s *[]string) {
+	//修改string切片中的某一个元素，再通过指针赋值回原切片，会影响到外部的切片
+	tmp := []byte((*s)[0])
+	fmt.Println(tmp)
+	tmp[0] = []byte("g")[0]
+	tmp[5] = []byte("9")[0]
+	(*s)[0] = string(tmp)
+	(*s)[1] = "Go"
+	*s = append(*s, "yes")
+}
+
 func main() {
+	modifystrval()
 	var s = "hello 世界"
 
 	var a = []byte(s)

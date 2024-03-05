@@ -85,9 +85,80 @@ func test4() {
 	fmt.Println("end......")
 }
 
+func maxSubArray(nums []int) int {
+	n := len(nums)
+	dp := make([]int, n)
+	dp[0] = nums[0]
+	res := nums[0]
+	max := func(a, b int) int {
+		if a > b {
+			return a
+		} else {
+			return b
+		}
+	}
+	for i := 1; i < n; i++ {
+		dp[i] = max(dp[i-1]+nums[i], nums[i])
+		res = max(res, dp[i])
+	}
+	return res
+}
+
+func test6(nums1, nums2 []int) {
+	len1, len2 := len(nums1), len(nums2)
+	for i := 0; i < len2; i++ {
+		nums1 = append(nums1, 0)
+	}
+	fmt.Println(nums1)
+
+	length1, length2 := len(nums1), len(nums2)
+
+	index1, index2, index3 := 0, 0, len1
+
+	for index1 < length1 && index2 < length2 {
+
+		if nums1[index1] <= nums2[index2] && nums1[index1] != 0 {
+			index1++
+		} else if nums1[index1] > nums2[index2] && nums1[index1] != 0 {
+			tmp := nums1[index1]
+			nums1[index1] = nums1[index3]
+			nums1[index3] = tmp
+			nums1[index1] = nums2[index2]
+
+			index1++
+			index2++
+			index3++
+		} else {
+			nums1[index1] = nums2[index2]
+			index1++
+			index2++
+		}
+
+	}
+
+	fmt.Println(nums1)
+
+}
+
+func reverselist(head *Listnode) {
+
+	pre, cur := nil, head
+	for cur != nil {
+		tmp := cur.Next
+		cur.Next = pre
+		pre = cur
+		cur = tmp
+	}
+	return pre
+}
+
 func main() {
-	test1()
-	test2()
-	test3()
-	test4()
+	// test1()
+	// test2()
+	// test3()
+	// test4()
+	//test5()
+	nums1 := []int{1, 2, 5, 7, 8, 12}
+	nums2 := []int{2, 5, 6, 7, 9}
+	test6(nums1, nums2)
 }
